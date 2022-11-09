@@ -2,10 +2,9 @@
 
    RestApi Bank Server
 
-  Возможности банка
+  Возможности банка( В файлике RequestsForBank.postman_collection.json можно увидеть все виды http запросов)
   -----------
 
-  1. В файлике RequestsForBank.postman_collection.json можно увидеть все виды http запросов.
 
   /create
   ------------------
