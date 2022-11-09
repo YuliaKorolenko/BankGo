@@ -20,14 +20,20 @@ func MakeTransaction(w http.ResponseWriter, r *http.Request) base.Transaction {
 	}
 	return transaction
 }
+
 func (handler *Handler) CreateAccount(w http.ResponseWriter, r *http.Request) {
 	transaction := MakeTransaction(w, r)
-	//if (Session{}) == session {
-	//	fmt.Println("структура пустая")
-	//}
+	if (base.Transaction{}) == transaction {
+		return
+	}
+	isAccount, _ := handler.postgresMethods.IsExistBalance(transaction.Id)
+	if isAccount {
+		http.Error(w, "Account already exist", http.StatusBadRequest)
+		return
+	}
 	handler.postgresMethods.CreateBalance(transaction.Id, transaction.Amount)
 	handler.postgresMethods.PutCharge(transaction.Id, transaction.Amount)
-	fmt.Fprintf(w, "Create Account :, %+q, %+v", transaction.Id, transaction.Amount)
+	fmt.Fprintf(w, "Create Account : %+v", transaction.Id)
 }
 
 // DepositMoney Метод начисления средств на баланс.
@@ -42,6 +48,11 @@ func (handler *Handler) DepositMoney(w http.ResponseWriter, r *http.Request) {
 // Reserve Метод резервирования средств с основного баланса на отдельном счете.
 func (handler *Handler) Reserve(w http.ResponseWriter, r *http.Request) {
 	transaction := MakeTransaction(w, r)
+	isReserve, _ := handler.postgresMethods.IsExistReserveTransaction(transaction)
+	if isReserve {
+		http.Error(w, "Money for this order has been reserved already", http.StatusBadRequest)
+		return
+	}
 	balance, err := handler.postgresMethods.GetBalance(transaction.Id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -69,6 +80,11 @@ func (handler *Handler) PersonalBalance(w http.ResponseWriter, r *http.Request) 
 // Метод признания выручки – списывает из резерва деньги, добавляет данные в отчет для бухгалтерии.
 func (handler *Handler) Debit(w http.ResponseWriter, r *http.Request) {
 	transaction := MakeTransaction(w, r)
+	isReserve, _ := handler.postgresMethods.IsExistReserveTransaction(transaction)
+	if !isReserve {
+		http.Error(w, "Money for this order has not been reserved", http.StatusBadRequest)
+		return
+	}
 	handler.postgresMethods.CompletionTransaction(transaction)
 	fmt.Fprintf(w, "Debit : %+v", transaction)
 }
