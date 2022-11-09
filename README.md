@@ -20,6 +20,8 @@
   ------------
 
  Узнаёт баланс пользователя.
+ ![image](https://user-images.githubusercontent.com/79725120/200954432-4a9becc6-685c-464a-bebb-a2bd051dbbe0.png)
+
 
   /reserve
   ---------
