@@ -69,6 +69,11 @@ func (handler *Handler) Reserve(w http.ResponseWriter, r *http.Request) {
 // PersonalBalance Метод получения баланса пользователя.
 func (handler *Handler) PersonalBalance(w http.ResponseWriter, r *http.Request) {
 	transaction := MakeTransaction(w, r)
+	isAccount, err := handler.postgresMethods.IsExistBalance(transaction.Id)
+	if !isAccount {
+		http.Error(w, "Account don't exist", http.StatusBadRequest)
+		return
+	}
 	balance, err := handler.postgresMethods.GetBalance(transaction.Id)
 	if err != nil {
 		http.Error(w, "No money", http.StatusBadRequest)
