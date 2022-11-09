@@ -36,7 +36,6 @@
   ![image](https://user-images.githubusercontent.com/79725120/200938045-186f8225-835f-4600-a99b-ebee9cf3c0f1.png)
   2. Balances. Тут хранятся все аккаунты пользователей и текущая сумма на них.
   ![image](https://user-images.githubusercontent.com/79725120/200938140-381f01bc-0b97-4d0b-aa89-4762026f37f6.png)
-
   3. Charges. Сюда мы записываем все зачисления на счёт пользователя.
   ![image](https://user-images.githubusercontent.com/79725120/200938236-29448d15-5f97-4f2b-a7f0-f7ac67814656.png)
 
