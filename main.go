@@ -32,6 +32,7 @@ func main() {
 	router.HandleFunc("/deposit", hadler.DepositMoney)
 	router.HandleFunc("/reserve", hadler.Reserve)
 	router.HandleFunc("/balance", hadler.PersonalBalance)
+	router.HandleFunc("/debit", hadler.Debit)
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
